@@ -1,23 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import useChat from './hooks/useChat'
 
 function App() {
+  const { mensag, sendMessage } = useChat()
+  const [value, setValue] = useState("")
+
+  const handleChange = (event) => {
+    setValue(event.target.value)
+  }
+
+  const handleSend = () => {
+    console.log("text", value)
+    sendMessage(value)
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Bang online
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {mensag.map((msg)=> {
+          return <p key={msg}>{msg}</p>
+        })}
+        <input type="text" value={value} onChange={handleChange} />
+        <button onClick={handleSend}>send</button>
       </header>
     </div>
   );
