@@ -3,7 +3,7 @@ import './App.css';
 import useChat from './hooks/useChat'
 
 function App() {
-  const { mensag, sendMessage } = useChat()
+  const { mensag, sendMessage, sendReadyStart, sendReadyStartMaster } = useChat()
   const [value, setValue] = useState("")
 
   const handleChange = (event) => {
@@ -26,6 +26,9 @@ function App() {
         })}
         <input type="text" value={value} onChange={handleChange} />
         <button onClick={handleSend}>send</button>
+
+        <button onClick={sendReadyStart}>Start Game</button>
+        <button onClick={sendReadyStartMaster}>Start Game Master</button>
       </header>
     </div>
   );

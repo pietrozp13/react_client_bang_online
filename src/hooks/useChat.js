@@ -4,18 +4,23 @@ import io from 'socket.io-client';
 
 const useChat = () => {
     const [mensag, setMsg] = useState([])
+    const [myCards, setMuCards] = useState([])
     const socketRef = useRef()
 
-    useEffect(()=>{
+    useEffect(() =>{
         socketRef.current = io('http://localhost:5099');
 
         socketRef.current.on('message', (msgParam) => {
             setMsg(mensag => [...mensag, msgParam])
         });
 
-        socketRef.current.on('message prev', (msgParamSer) => {
-            console.log("prev msg server", msgParamSer)
-        });       
+        socketRef.current.on('user charater', (charaterParam) => {
+            console.log("user charater", charaterParam)
+        });
+        
+        socketRef.current.on('user cards', (cards) => {
+            console.log("user cards", cards)
+        });  
 
         return () => {
             socketRef.current.disconnect();
@@ -27,7 +32,17 @@ const useChat = () => {
         socketRef.current.emit("message", messagesParam)
     }
 
-    return { mensag, sendMessage }
+    const sendReadyStart = () => {
+        socketRef.current.emit("sendReadyStart", {
+            id: socketRef.current.id
+        })
+    }
+
+    const sendReadyStartMaster = () => {
+        socketRef.current.emit("sendReadyStartMaster")
+    }
+
+    return { mensag, sendMessage, sendReadyStart, sendReadyStartMaster }
 
 }
 
