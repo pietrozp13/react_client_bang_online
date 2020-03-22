@@ -5,9 +5,10 @@ import io from 'socket.io-client';
 const useChat = () => {
     const [mensag, setMsg] = useState([])
     const [myCards, setMuCards] = useState([])
+    const [allGameData, setAllGameData] = useState([])
     const socketRef = useRef()
 
-    useEffect(() =>{
+    useEffect(() => {
         socketRef.current = io('http://localhost:5099');
 
         socketRef.current.on('message', (msgParam) => {
@@ -22,19 +23,24 @@ const useChat = () => {
             console.log("user cards", cards)
         });  
 
+        socketRef.current.on('debugC', (debug) => {
+            console.log("debug", debug)
+        });  
+        
+        socketRef.current.on('AllGameData', (allData) => {
+            setAllGameData(allData)
+        });  
+
+
         return () => {
             socketRef.current.disconnect();
         }
       },[])
 
-
-    const sendMessage = (messagesParam) => {
-        socketRef.current.emit("message", messagesParam)
-    }
-
-    const sendReadyStart = () => {
+    const sendReadyStart = (name) => {
         socketRef.current.emit("sendReadyStart", {
-            id: socketRef.current.id
+            id: socketRef.current.id,
+            name: name
         })
     }
 
@@ -42,7 +48,17 @@ const useChat = () => {
         socketRef.current.emit("sendReadyStartMaster")
     }
 
-    return { mensag, sendMessage, sendReadyStart, sendReadyStartMaster }
+    const sendDebug = () => {
+        socketRef.current.emit("debug")
+    }
+
+    return {
+        mensag,
+        allGameData,
+        sendReadyStart,
+        sendReadyStartMaster,
+        sendDebug
+    }
 
 }
 

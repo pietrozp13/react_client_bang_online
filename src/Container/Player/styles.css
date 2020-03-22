@@ -1,0 +1,10 @@
+.playerContainer {
+    width: 60px;
+    height: 60px;
+    background: red;
+    border-radius: 50%;
+    border: 3px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

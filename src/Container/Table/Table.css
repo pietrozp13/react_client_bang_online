@@ -1,0 +1,14 @@
+.rectangle {
+    width: 70%;
+    height: 170px;
+    background: #499926;
+    border-radius: 60px;
+    border: 9px solid #BA6D11;
+}
+
+.tableContainer {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
