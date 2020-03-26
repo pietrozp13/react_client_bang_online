@@ -5,7 +5,7 @@ import Controls from '../Container/Controls/Controls'
 import Table from './Table/Table'
 
 function App() {
-  const { mensag, allGameData, sendReadyStart, sendReadyStartMaster, sendDebug } = useChat()
+  const { mensag, playerCharater, allGameData, sendReadyStart, sendReadyStartMaster, sendDebug, playerTurn, handlePassTurn, socketIDPlayer } = useChat()
   const [value, setValue] = useState("player")
 
   const handleChange = (event) => {
@@ -14,7 +14,6 @@ function App() {
 
   return (
     <div className="App" style={{ backgroundColor: "gray", "height": "100vh" }}>
-      {/* {console.log(allGameData)} */}
         <Controls
           handleAddPlayer={(value) => sendReadyStart(value)}
           handleReadyStartPlayer={sendReadyStartMaster}
@@ -22,7 +21,15 @@ function App() {
           setHandleValue={(e) => handleChange(e)}
           value={value}
         />
-        <Table playersParam={allGameData} currentPlayerID={value}/>
+        <Table playerCharater={playerCharater} playersParam={allGameData} currentPlayerID={value} socketIDPlayer={socketIDPlayer}/>
+        {console.log("player id 1",playerTurn)}
+        {console.log("player id 2",socketIDPlayer)}
+        {playerTurn === socketIDPlayer &&
+          <div>
+            <p>comands</p>
+            <button onClick={handlePassTurn}>Passar turn</button>
+          </div>
+        }
     </div>
   );
 }
