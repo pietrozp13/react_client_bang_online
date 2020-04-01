@@ -18,7 +18,7 @@ export default function Cards({
             position: "fixed",
             display: "flex",
             bottom: "0",
-            width: "100%",
+            width: "65%",
             justifyContent: "space-around",
             flexDirection: "column"
           }}
@@ -61,6 +61,7 @@ export default function Cards({
                 fontSize: "26px",
                 borderRadius: "15px"
               }}
+              disabled={!cardSelected}
               onClick={useDiscardCard}
             >
               Descartar

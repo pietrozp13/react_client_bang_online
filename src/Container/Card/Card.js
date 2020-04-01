@@ -1,9 +1,6 @@
 import React from "react";
 
 export default function Card({ cardName, selected, onHandleClick }) {
-  {
-    console.log(selected);
-  }
   return (
     <div
       style={{

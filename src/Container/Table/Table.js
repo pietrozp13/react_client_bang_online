@@ -40,7 +40,7 @@ export default function Table({
               isTurn={socketIDPlayer === playersOrder[0].id}
             />
           </div>
-          <div style={{ position: "absolute", top: "60px", left: "88%" }}>
+          <div style={{ position: "absolute", top: "60px", left: "77%" }}>
             <Player
               onClick={() => handleSetPlayerSelected(playersOrder[1])}
               playerName={playersOrder[1].name}

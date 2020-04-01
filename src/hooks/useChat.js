@@ -10,6 +10,8 @@ const useChat = () => {
   const [userCards, setUserCards] = useState(null);
   const [cardSelected, setCardSelected] = useState(null);
   const [playerSelected, setPlayerSelected] = useState(null);
+  const [infos, setInfos] = useState([]);
+  const [atacInfo, setAtacInfo] = useState([]);
   const socketRef = useRef();
 
   useEffect(() => {
@@ -20,7 +22,6 @@ const useChat = () => {
     });
 
     socketRef.current.on("user charater", charaterParam => {
-      console.log("user charater", charaterParam);
       setPlayerCharater(charaterParam);
     });
 
@@ -39,6 +40,18 @@ const useChat = () => {
 
     socketRef.current.on("playerTurn", ({ playerID }) => {
       setPlayerTurn(playerID);
+    });
+
+    socketRef.current.on(
+      "playerTurnUseCardInfos",
+      ({ card, fromPlayer, toPlayer, type }) => {
+        setInfos([...infos, { cardUsed: card, fromPlayer, toPlayer, type }]);
+      }
+    );
+
+    socketRef.current.on("reciveAttack", ({ card, fromPlayer, toPlayer }) => {
+      console.log("aquiii, recebeu ataque");
+      setAtacInfo([...atacInfo, { info: "voce foi atacado" }]);
     });
 
     return () => {
@@ -70,13 +83,13 @@ const useChat = () => {
   };
 
   const useCard = ({ card, player }) => {
-    console.log("selected card", cardSelected);
-    console.log("selected player", playerSelected);
     socketRef.current.emit("Use Cart", {
       card: cardSelected,
       fromPlayer: socketIDPlayer,
       toPlayer: playerSelected.id
     });
+    setCardSelected(null);
+    setPlayerSelected(null);
   };
 
   const useEquipCard = () => {
@@ -84,7 +97,12 @@ const useChat = () => {
   };
 
   const useDiscardCard = () => {
-    console.log("selected card", cardSelected);
+    socketRef.current.emit("Descart Cart", {
+      card: cardSelected,
+      fromPlayer: socketIDPlayer
+    });
+    setCardSelected(null);
+    setPlayerSelected(null);
   };
 
   const handleSetPlayerSelected = player => {
@@ -96,7 +114,6 @@ const useChat = () => {
   };
 
   const handleCardSelected = card => {
-    console.log(card);
     if (cardSelected && card.id === cardSelected.id) {
       setCardSelected(null);
     } else {
@@ -121,7 +138,9 @@ const useChat = () => {
     handleCardSelected,
     cardSelected,
     handleSetPlayerSelected,
-    playerSelected
+    playerSelected,
+    infos,
+    atacInfo
   };
 };
 
